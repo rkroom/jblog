@@ -1,0 +1,55 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:http="http://www.w3.org/1999/xhtml"
+      layout:decorator="adminlayout/layout">
+<body>
+<div layout:fragment="content">
+    <div id="articlepost">
+        <form name="input" th:action="@{'/admin/edit/'+${article.slug}}" method="post">
+            title: <br><input type="text" name="title" th:value="${article.title}"><br>
+            content: <br><textarea id="editor_edit" name="content" style="width:700px;height:600px;" wrap="virtual" th:text="${article.content}">content</textarea><br>
+            slug:<br><input type="text" name="slug" th:value="${article.slug}">
+            <div th:each="tag1:${article.tags}" id="tagselect">
+                <input type="checkbox" name="tags" th:value="${tag1.id}" checked><span th:text="${tag1.tag}">tag</span>
+            </div>
+            <div th:each="tag:${tags}" id="tagselect">
+                <input type="checkbox" name="tags" th:value="${tag.id}"><span th:text="${tag.tag}">tag</span>
+            </div>
+            <br>
+            <select name="categories">
+                <option  th:value="${article.categories.id}"  th:text="${article.categories.category}">category</option>
+                <div th:each="category:${categories}" id="categoryselect">
+                    <option  th:value="${category.id}"  th:text="${category.category}">category</option>
+                </div>
+            </select>
+            <select name="published">
+                <option th:value="1">发布</option>
+                <option th:value="0">存为草稿</option>
+            </select>
+            <input type="hidden" name="users" th:value="${article.users.id}">
+            <input type="hidden" name="id" th:value="${article.id}">
+            <input th:if="${article.publishdate}" type="hidden" name="publishdate" th:value="${article.publishdate}">
+            <input type="hidden" name="createdate" th:value="${article.createdate}">
+            <input type="submit" value="Submit">
+        </form>
+        <script charset="utf-8" th:src="@{/js/tinymce/tinymce.min.js}"></script>
+        <script>
+            tinymce.init({
+                selector: '#editor_edit',
+                language: 'zh_CN',
+                browser_spellcheck: true,
+                contextmenu: false,
+                plugins: [
+                    "advlist autolink lists link image charmap print preview anchor",
+                    "searchreplace visualblocks code fullscreen",
+                    "table directionality emoticons template paste fullpage codesample"
+                ],
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image ",
+
+            });
+
+        </script>
+    </div>
+</body>
+
+</html>

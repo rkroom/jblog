@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* 设置超链接样式 */
+        a{text-decoration:none;}
+        a:link {color: #0800ff} /* 未访问的链接 */
+        a:visited {color: #0800ff} /* 已访问的链接 */
+        a:hover {color: #000000} /* 鼠标移动到链接上 */
+        a:active {color: #0800ff} /* 选定的链接 */
+        .wrapper {
+            width: 960px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .header {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .sidebar {
+            width: 220px;
+            display: inline;
+            margin-left: 0px;
+            float: right;
+            margin-bottom: 5px;
+        }
+
+        .main-content {
+            width: 720px;
+            display: inline;
+            float: left;
+            margin-bottom: 5px;
+            border-right: 1px solid #ddd;
+        }
+
+        .footer {
+            clear: both;
+        }
+        /* 将UL内的内容放置到一排*/
+        #articleinfo ul {
+            padding: 0;
+            margin: 9px 0 0;
+            color: #999;
+            text-align: left;
+            display: block;
+            list-style-type: none;
+        }
+        #articleinfo li{
+            display: inline-block;
+        }
+        #articleinfo li:first-child {
+            padding-right: 5px;
+        }
+        #articleinfo  a:hover {
+            border-bottom-color: transparent;
+        }
+        /*设置文章标题样式*/
+        .post-title {
+            margin-left: 30px;
+        }
+        .post-title {
+            margin: 0;
+            color: #555;
+            text-align: left;
+            font: bold 25px/1.1 "ff-tisa-web-pro", Cambria, "Times New Roman", Georgia, Times, sans-serif;
+        }
+        .post-title a {
+            color: #555;
+        }
+        .post-title a{ text-decoration:none}
+        /*设置文章区域边框*/
+        #article {
+            border-bottom: 1px solid #ddd;
+        }
+        /*设置评论样式*/
+        #commentpost {
+            border-bottom: 1px solid #ddd;
+        }
+        #comment {
+            line-height: 30%;
+            border-bottom: 1px solid #ddd;
+            margin-right: 1px;
+        }
+        /*设置页码样式*/
+        #page-numbers {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+        }
+
+        #page-numbers li {
+            display: inline;
+        }
+
+        #page-numbers li a span {
+            color: black;
+            float: left;
+            padding: 6px 10px;
+            text-decoration: none;
+            border: 1px solid #ddd; /* Gray */
+        }
+        #page-numbers li a span.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #page-numbers li a span:hover:not(.active) {
+            background-color: #ddd;
+        }
+        /*设置代码样式*/
+        pre{
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            overflow: auto;
+            word-break: break-all;
+            word-wrap: break-word;
+            background-color: #000000;
+            width: 710px;
+            color: #ffffff
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        <title th:text="${siteinfo.title}">Title</title>
+        <a href="/index" ><h1  style="text-align: center;color: #000000" th:text="${siteinfo.title}">h1</h1></a>
+    </div>
+    <div class="main-content">
+        <div layout:fragment="content"></div>
+    </div>
+    <div class="aside sidebar">
+        <a th:href="@{/login}">登录</a><br>
+        <a th:href="@{/about}">关于</a><br>
+        <a th:if="${loginstatus}" th:href="@{/admin/articlepost}">管理</a>
+    </div>
+    <div class="footer">
+        <a href="/index"><span>返回首页</span></a>&nbsp;<a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action" rel="noopener noreferrer" target="_blank">备案号</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:http="http://www.w3.org/1999/xhtml"
+      layout:decorator="pagelayout/layout">
+<body>
+<div layout:fragment="content">
+    <div id="article">
+        <header>
+            <h2 class="post-title">
+                <span th:utext="${article.title}">article title</span>
+            </h2>
+        </header>
+        <div id="articleinfo">
+            <ul>
+                <li th:text="${article.users.username}">author</li>
+                <li th:text="${#dates.format(article.publishdate,'yyyy-MM-dd')}">publishdate</li>
+                <li th:text="'分类目录:'+${article.categories.category}">category</li>
+            </ul>
+        </div>
+        <div id="article">
+            <p th:utext="${article.content}">content</p>
+            <br>
+            <div style="font-size:12px;color:#555;">
+                tag:<span id="tag list" th:each="tag:${article.tags}">
+                <span th:text="${tag.tag}+'  '"></span>
+            </span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

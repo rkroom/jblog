@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">  <!--/* 必须添加这个命名空间，否则thymeleaf不会生效*/-->
+<head>
+    <meta charset="UTF-8">
+    <title >benbu.cc</title>
+</head>
+<body>
+<h1 align="center"><span th:text="${article.title}">title</span></h1> <!--/* 使用th:表达式来使用各项功能*/-->
+<p align="center"><span  th:text="${article.content}">content</span></p>
+</body>
+</html>

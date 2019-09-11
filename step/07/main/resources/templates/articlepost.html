@@ -1,0 +1,14 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+        <!--/* 开始表单，表单数据传递到/admin/articleadd，传递方法是post */-->
+        <form name="input" th:action="@{/admin/articleadd}" method="post">
+            <!--/* 添加一个输入框，命名为title */-->
+            title: <br><input type="text" name="title" required	><br>
+            <!-- 添加一个textarea类型的输入框，命名为content，宽度为700像素，高度为600像素，设为为自动换行 -->
+            content: <br><textarea id="editor_article" name="content" style="width:700px;height:600px;" wrap="virtual"></textarea><br>
+            <!-- 添加一个提交按钮 -->
+            <input type="submit" value="Submit">
+        </form>
+</body>
+</html>

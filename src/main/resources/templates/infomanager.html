@@ -1,0 +1,40 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:http="http://www.w3.org/1999/xhtml"
+      layout:decorator="adminlayout/layout">
+<body>
+<div layout:fragment="content">
+    <table border="1">
+        <tr>
+            <td>分类</td>
+        </tr>
+        <tr th:each="category:${categories}">
+            <td th:text="${category.category}">分类</td>
+        </tr>
+    </table>
+    <br>
+    <table border="1">
+        <tr>
+            <td>tag</td>
+        </tr>
+        <tr th:each="tag:${tags}">
+            <td th:text="${tag.tag}">tag</td>
+        </tr>
+    </table>
+    <form name="input" th:action="@{/admin/categoryadd}" method="post">
+        分类: <br><input type="text" name="category" required><br>
+        <input type="submit" value="Submit">
+    </form>
+    <form name="input" th:action="@{/admin/tagadd}" method="post">
+        tag: <br><input type="text" name="tag" required><br>
+        <input type="submit" value="Submit">
+    </form>
+    <form name="input" th:action="@{/admin/changepassword}" method="post">
+        密码: <br><input type="text" name="password" required><br>
+        <input type="hidden" name="username" th:value="${username}">
+        <input type="submit" value="Submit">
+    </form>
+</div>
+</body>
+
+</html>

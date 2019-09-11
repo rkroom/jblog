@@ -1,0 +1,14 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:http="http://www.w3.org/1999/xhtml"
+      layout:decorator="adminlayout/layout">
+<body>
+<div layout:fragment="content">
+    <form name="delete" th:action="@{'/admin/deletion/article/'+${id}}" method="post">
+        <input type="hidden" th:value="${id}">
+        <span th:text="'您确定要删除【'+${title}+'】吗？'">删除</span>
+        <input type="submit" value="Submit">
+</div>
+</body>
+
+</html>

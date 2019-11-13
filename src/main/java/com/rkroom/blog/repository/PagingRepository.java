@@ -1,6 +1,7 @@
 package com.rkroom.blog.repository;
 
 import com.rkroom.blog.entity.Article;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -22,4 +23,11 @@ public interface PagingRepository extends JpaRepository<Article,Integer> {
     //查询所有文章，这里也实现了分页，每页数量为200
     @Query(value = "select id,title,slug,published from article order by id desc limit 200 offset ?1",nativeQuery = true)
     List<Map<String,Object>> findAllArticle(int page);
+    //根据分类查询已经发表的文章
+    //JQPL查询相应分类下已发表的文章
+    @Query(value = "select a.id,a.title,SUBSTRING(a.content,1,200) as content,a.slug,a.publishdate,u.username,c.category from Article a left join User u on (a.users=u.id) left join Categories c on (a.categories = c.id) where a.categories.category = ?1 and a.published = true ")
+    List<List> findArticleByCategoryAndPage(String category, Pageable pageable); //分类目录和分页数据作为参数
+    // 查询相应分类已发表文章数量
+    @Query("select count(a.id) from Article a where a.categories.category = ?1 and a.published = true ")
+    int countByPublishedAndCategory(String category);
 }

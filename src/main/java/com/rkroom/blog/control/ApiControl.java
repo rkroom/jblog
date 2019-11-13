@@ -32,12 +32,41 @@ public class ApiControl {
 
     @GetMapping("/index")
     public ResponseBean index(HttpServletRequest request) {
-        try { //如果page传递过来的参数不是数字，在转换的时候会出现错误，这里用try，catch来处理错误。
+        try { //如果page传递过来的参数不是数字或者为空，在转换的时候会出现错误，这里用try，catch来处理错误。
             int page = Integer.parseInt(request.getParameter("page")); //将获取的参数转换为INT类型
             return new ResponseBean(200,null,pagingService.selectAllByPage(true, (page-1)*10)); //返回列表数据
         }catch(Exception e) {
             return null; //如果报错则不返回数据
         }
+    }
+
+    @GetMapping("/category")
+    public ResponseBean categoryindex(HttpServletRequest request) {
+        try {
+            int page = Integer.parseInt(request.getParameter("page"));
+            String category = request.getParameter("category");
+            //获取相应分类下相应页码已经发表文章
+            return new ResponseBean(200,null,pagingService.selectArticleByCategoryAndPage(category,page));
+        }catch(Exception e) {
+            return null;
+        }
+    }
+
+    @GetMapping("/categroyarticlenum")
+    public ResponseBean categroyarticlenum(HttpServletRequest request){
+        try {
+            String category = request.getParameter("category");
+            //获取对应分类已经发表文章数量
+            return new ResponseBean(200,null,pagingService.selectPublishedCountByCategory(category));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @GetMapping("/articleNum")
+    public ResponseBean getArticleNum() {
+        //返回所有已经发表文章的数量
+        return new ResponseBean(200,null,pagingService.selectCountByStatus(true));
     }
 
 }

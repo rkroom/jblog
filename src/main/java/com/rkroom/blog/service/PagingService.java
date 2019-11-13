@@ -7,4 +7,6 @@ public interface PagingService {
     public int selectCountByStatus(boolean status);
     public List selectAllUnPublished(int page);
     public List selectAllArticle(int page);
+    public List selectArticleByCategoryAndPage(String category,int page);
+    public int selectPublishedCountByCategory(String category);
 }

@@ -3,6 +3,9 @@ package com.rkroom.blog.service.Impl;
 import com.rkroom.blog.repository.PagingRepository;
 import com.rkroom.blog.service.PagingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -53,4 +56,33 @@ public class PagingServiceImpl implements PagingService {
     public List selectAllArticle(int page){
         return pagingRepository.findAllArticle(page);
     }
+    public List selectArticleByCategoryAndPage(String category,int page){
+        //分页参数，页码，每页数量，排序方式，排序依据
+        Pageable pageable = PageRequest.of(page-1, 10, Sort.Direction.DESC,"publishdate");
+        /*
+        由于Repository返回的数据为列表形式，需要我们自己将其修改为键值对的Map形式。
+         */
+        List<List> categoryArticle = pagingRepository.findArticleByCategoryAndPage(category,pageable);
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        for (List i: categoryArticle){
+            // 去除掉html标签
+            i.set(2,i.get(2).toString().replaceAll("<(S*?)[^>]*>.*?|<.*? />", ""));
+            i.set(2,i.get(2).toString().replaceAll("&.{2,6}?;", ""));
+            Map map = new HashMap();
+            map.put("id",i.get(0));
+            map.put("title",i.get(1));
+            map.put("content",i.get(2));
+            map.put("slug",i.get(3));
+            map.put("publishdate",i.get(4));
+            map.put("username",i.get(5));
+            map.put("category",i.get(6));
+            list.add(map);
+        }
+        return list;
+    }
+
+    public int selectPublishedCountByCategory(String category){
+        return pagingRepository.countByPublishedAndCategory(category); //返回对应目录已发表文章数量
+    }
+
 }

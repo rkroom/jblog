@@ -11,8 +11,10 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.servlet.Filter;
 
 @Configuration //定义配置类
 public class ShiroConfig {
@@ -76,6 +78,10 @@ public class ShiroConfig {
     @Bean(name = "shiroFilter") //shiro过滤器
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        //加载JWT过滤器
+        Map<String, Filter> filterMap = new HashMap<>();
+        filterMap.put("jwt", new JWTFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         shiroFilterFactoryBean.setLoginUrl("/login"); //登陆页面的URL
         shiroFilterFactoryBean.setSuccessUrl("/admin/articlepost"); //登陆成功后跳转的URL
@@ -87,6 +93,8 @@ public class ShiroConfig {
     //user，需要登陆才可访问，anon任何人可以访问，authc，需要登陆时才使用，在设置访问权限的时候要注意顺序
     private void loadShiroFilterChain(ShiroFilterFactoryBean shiroFilterFactoryBean) {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        // 使/api/路径下所有的请求都接受JWT的过滤
+        filterChainDefinitionMap.put("/api/**","jwt");
         filterChainDefinitionMap.put("/admin/**","user");
         filterChainDefinitionMap.put("/login", "authc");
         filterChainDefinitionMap.put("/**", "anon");

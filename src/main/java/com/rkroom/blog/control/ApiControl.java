@@ -1,20 +1,25 @@
 package com.rkroom.blog.control;
 
+import com.alibaba.fastjson.JSONObject;
 import com.rkroom.blog.entity.Article;
+import com.rkroom.blog.entity.User;
 import com.rkroom.blog.service.ArticleService;
 import com.rkroom.blog.service.PagingService;
+import com.rkroom.blog.service.UserService;
+import com.rkroom.blog.utility.JSONUtil;
+import com.rkroom.blog.utility.JWTUtil;
 import com.rkroom.blog.utility.ResponseBean;
+import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController //申明这是一个control，并且提供rest风格的返回值
 @RequestMapping("/api") //匹配/api路径
-@CrossOrigin //允许跨域访问
 public class ApiControl {
 
     @Autowired //自动装配，通过这个注解，使我们可以访问article模型的数据
@@ -22,6 +27,9 @@ public class ApiControl {
 
     @Autowired
     private PagingService pagingService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/article") //匹配URL，访问了这个url，将调用下面的方法
     public ResponseBean article(HttpServletRequest request) {  //参数为HttpServletRequest类型
@@ -67,6 +75,36 @@ public class ApiControl {
     public ResponseBean getArticleNum() {
         //返回所有已经发表文章的数量
         return new ResponseBean(200,null,pagingService.selectCountByStatus(true));
+    }
+
+    @PostMapping("/login") //POST方法匹配/login
+    public ResponseBean login(HttpServletRequest request) {
+        // 调用JSON处理工具，获取字符串
+        String jsonString = JSONUtil.getJSONString(request);
+        // 将字符串转换为对象
+        JSONObject userJson  = JSONObject.parseObject(jsonString);
+        // 获取username和password的值
+        String username = userJson.getString("username");
+        String password = userJson.getString("password");
+        // 获取用户信息
+        User user = userService.selectByUsername(username);
+        // 本例中数据库存放的密码是hash过后的密码，因此需要对用户传递过来的密码进行hash处理，再比对
+        // 将密码hash,hash方法选为md5，同时加盐，盐为用户名，hash次数为两次，将结果转换为String类型
+        password = new SimpleHash("md5",password, ByteSource.Util.bytes(username),2).toString();
+        // 如果数据库中的密码和用户传递过来的密码相同，则认证通过，向用户返回token
+        if (user.getPassword().equals(password)) {
+            // 如果验证失败，则返回错误信息
+            return new ResponseBean(200, "Login success", JWTUtil.sign(username,user.getId(),password));
+        } else {
+            throw new UnauthorizedException();
+        }
+    }
+
+    @GetMapping("/require_auth")
+    // 需要登陆注解
+    @RequiresAuthentication
+    public ResponseBean requireAuth() {
+        return new ResponseBean(200, "You are authenticated", null);
     }
 
 }

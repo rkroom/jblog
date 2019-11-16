@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -17,5 +18,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
     public void insert(Categories category){
         categoryRepository.save(category);
+    }
+    public Categories selectById(int id){
+        Optional<Categories> optional = categoryRepository.findById(id);
+        Categories category = optional.get();
+        return category;
     }
 }

@@ -2,6 +2,7 @@ package com.rkroom.blog.service;
 
 import com.rkroom.blog.entity.Article;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ArticleService { //接口ArticleService
@@ -15,4 +16,5 @@ public interface ArticleService { //接口ArticleService
     public int selectIdByslug(String slug); //根据slug查找ID
     public int deleteCascadeCommentDataByArticleId(int id); //根据ID删除评论
     public int deleteCascadeTagDataByArticleId(int id); //根据ID删除标签
+    public Date selectCreatedateById(int id);
 }

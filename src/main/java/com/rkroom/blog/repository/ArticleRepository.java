@@ -27,4 +27,6 @@ public interface ArticleRepository extends JpaRepository<Article,Integer> {  //�
     @Query(value = "delete from article where id= ?1",nativeQuery = true)
     @Modifying
     int deleteArticleById(int id);
+    @Query(value = "SELECT a.createdate from Article a where a.id = ?1") //采用JPQL
+    Date findCreatedateById(int id);
 }

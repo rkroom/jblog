@@ -18,7 +18,6 @@ public class JWTUtil {
      * @param secret 用户的密码
      * @return 加密的token
      */
-    // todo 将密码加盐再作为密钥
     public static String sign(String username, int userId, String secret) {
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -17,5 +18,10 @@ public class TagServiceImpl implements TagService {
     }
     public void insert(Tags tag){
         tagRepository.save(tag);
+    }
+    public Tags selectById(int id){
+        Optional<Tags> optional = tagRepository.findById(id);
+        Tags tag = optional.get();
+        return tag;
     }
 }

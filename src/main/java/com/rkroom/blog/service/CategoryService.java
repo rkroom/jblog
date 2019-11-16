@@ -7,4 +7,5 @@ import java.util.List;
 public interface CategoryService {
     List<Categories> selectAll();
     public void insert(Categories category);
+    public Categories selectById(int id);
 }

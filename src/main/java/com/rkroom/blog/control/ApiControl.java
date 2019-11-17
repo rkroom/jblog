@@ -100,11 +100,4 @@ public class ApiControl {
         }
     }
 
-    @GetMapping("/require_auth")
-    // 需要登陆注解
-    @RequiresAuthentication
-    public ResponseBean requireAuth() {
-        return new ResponseBean(200, "You are authenticated", null);
-    }
-
 }

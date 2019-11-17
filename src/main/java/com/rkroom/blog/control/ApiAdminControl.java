@@ -37,6 +37,9 @@ public class ApiAdminControl {
     @Autowired
     private PagingService pagingService;
 
+    @Autowired
+    private CommentService commentService;
+
     // todo 数据验证部分移动到serviceImpl
     // 新建文章
     @PutMapping("/article")
@@ -165,4 +168,33 @@ public class ApiAdminControl {
     public ResponseBean tagslist(){
         return new ResponseBean(200,null,tagService.selectAll());
     }
+
+    // 获取所有评论
+    @GetMapping("/allcomment")
+    public ResponseBean allcomment(){
+        return new ResponseBean(200,null,commentService.selectAllCommentAndItsArticle());
+    }
+
+    // 显示评论
+    @PostMapping("/publishcomment")
+    @Transactional
+    public ResponseBean publishcomment(HttpServletRequest request) {
+        String JSONString = JSONUtil.getJSONString(request);
+        JSONObject publishJSON  = JSONObject.parseObject(JSONString);
+        int commentid = publishJSON.getInteger("id");
+        commentService.publishCommentById(commentid);
+        return new ResponseBean(200,"审核通过，将在文章页显示",null);
+    }
+
+    // 删除评论
+    @DeleteMapping("/comment")
+    @Transactional
+    public ResponseBean deletecomment(HttpServletRequest request){
+        String JSONString = JSONUtil.getJSONString(request);
+        JSONObject publishJSON  = JSONObject.parseObject(JSONString);
+        int commentid = publishJSON.getInteger("id");
+        commentService.deleteCommentById(commentid);
+        return new ResponseBean(200,"delete success",null);
+    }
+
 }

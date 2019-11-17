@@ -1,9 +1,12 @@
 package com.rkroom.blog.control;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rkroom.blog.entity.Article;
+import com.rkroom.blog.entity.Comment;
 import com.rkroom.blog.entity.User;
 import com.rkroom.blog.service.ArticleService;
+import com.rkroom.blog.service.CommentService;
 import com.rkroom.blog.service.PagingService;
 import com.rkroom.blog.service.UserService;
 import com.rkroom.blog.utility.JSONUtil;
@@ -30,6 +33,9 @@ public class ApiControl {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/article") //匹配URL，访问了这个url，将调用下面的方法
     public ResponseBean article(HttpServletRequest request) {  //参数为HttpServletRequest类型
@@ -100,4 +106,27 @@ public class ApiControl {
         }
     }
 
+    //提交评论
+    @PutMapping("/comment")
+    public ResponseBean addComment(HttpServletRequest request) {
+        //获取JSON字符串
+        String jsonString = JSONUtil.getJSONString(request);
+        //将JSON转换为Comment实体
+        Comment comment = JSON.parseObject(jsonString,Comment.class);
+        //插入一条评论数据
+        commentService.insert(comment);
+        return new ResponseBean(200,"您的评论将会在审核成功后显示。",null);
+    }
+
+    // 根据文章ID获取对应的评论
+    @GetMapping("/comment")
+    public ResponseBean getComment(HttpServletRequest request){
+        try {
+            int article = Integer.parseInt(request.getParameter("article"));
+            //根据文章ID获取评论
+            return new ResponseBean(200,null,commentService.selectAllByArticleAndPublishstatus(article,true));
+        }catch(Exception e) {
+            return null;
+        }
+    }
 }

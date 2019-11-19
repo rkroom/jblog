@@ -12,4 +12,9 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(value = "update user set password = ?1 where username = ?2",nativeQuery = true)
     @Modifying
     int updatePasswordByUsername(String password,String username);
+    @Query(value = "update User u set u.password = ?1 where u.id = ?2")
+    @Modifying
+    int updatePasswordById(String password,int id);
+    @Query(value = "select u.username from User u where u.id = ?1")
+    String findUsernameById(int id);
 }

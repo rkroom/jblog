@@ -8,4 +8,6 @@ public interface CategoryService {
     List<Categories> selectAll();
     public void insert(Categories category);
     public Categories selectById(int id);
+    public List selectCategoryByIsindex(boolean status);
+    public void changeIsindexById(boolean status,int id);
 }

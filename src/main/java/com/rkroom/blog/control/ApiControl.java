@@ -5,15 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.rkroom.blog.entity.Article;
 import com.rkroom.blog.entity.Comment;
 import com.rkroom.blog.entity.User;
-import com.rkroom.blog.service.ArticleService;
-import com.rkroom.blog.service.CommentService;
-import com.rkroom.blog.service.PagingService;
-import com.rkroom.blog.service.UserService;
+import com.rkroom.blog.service.*;
 import com.rkroom.blog.utility.JSONUtil;
 import com.rkroom.blog.utility.JWTUtil;
 import com.rkroom.blog.utility.ResponseBean;
 import org.apache.shiro.authz.UnauthorizedException;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +32,12 @@ public class ApiControl {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private SiteService siteService;
 
     @GetMapping("/article") //匹配URL，访问了这个url，将调用下面的方法
     public ResponseBean article(HttpServletRequest request) {  //参数为HttpServletRequest类型
@@ -129,4 +131,18 @@ public class ApiControl {
             return null;
         }
     }
+
+    // 获取首页显示的分类目录
+    @GetMapping("/indexcategory")
+    public ResponseBean indexcategory(){
+        return new ResponseBean(200,null,categoryService.selectCategoryByIsindex(true));
+    }
+
+    // 获取网站信息
+    @GetMapping("/site")
+    public ResponseBean siteinfo(){
+        return new ResponseBean(200,null,siteService.selectOpenInfo());
+    }
+
+
 }

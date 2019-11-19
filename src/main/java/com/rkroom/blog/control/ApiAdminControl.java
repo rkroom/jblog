@@ -40,6 +40,9 @@ public class ApiAdminControl {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private SiteService siteService;
+
     // todo 数据验证部分移动到serviceImpl
     // 新建文章
     @PutMapping("/article")
@@ -195,6 +198,67 @@ public class ApiAdminControl {
         int commentid = publishJSON.getInteger("id");
         commentService.deleteCommentById(commentid);
         return new ResponseBean(200,"delete success",null);
+    }
+
+    //添加分类分录
+    @PutMapping("/category")
+    public ResponseBean addcategory(HttpServletRequest request) {
+        String categoryJSON = JSONUtil.getJSONString(request);
+        Categories category = JSON.parseObject(categoryJSON,Categories.class);
+        categoryService.insert(category);
+        return new ResponseBean(200,"success",category);
+    }
+
+    //添加标签
+    @PutMapping("/tag")
+    public ResponseBean addtag(HttpServletRequest request) {
+        String tagJSON = JSONUtil.getJSONString(request);
+        Tags tag = JSON.parseObject(tagJSON,Tags.class);
+        tagService.insert(tag);
+        return new ResponseBean(200,"success",tag);
+    }
+
+    //修改用户密码
+    @PostMapping("/password")
+    @Transactional
+    public ResponseBean changepassword(HttpServletRequest request){
+        String paaswdString = JSONUtil.getJSONString(request);
+        JSONObject passwdJSON  = JSONObject.parseObject(paaswdString);
+        int userid = passwdJSON.getInteger("id");
+        String password = passwdJSON.getString("password");
+        userService.updatePasswordById(password,userid);
+        return new ResponseBean(200,"change success",null);
+    }
+
+    // 修改分类目录首页显示状态
+    @PostMapping("/indexcategory")
+    @Transactional
+    public ResponseBean changecategoryisindex(HttpServletRequest request){
+        String JSONString = JSONUtil.getJSONString(request);
+        JSONObject categoryJSON  = JSONObject.parseObject(JSONString);
+        int categoryId = categoryJSON.getInteger("id");
+        Boolean categoryStatus = categoryJSON.getBoolean("status");
+        categoryService.changeIsindexById(categoryStatus,categoryId);
+        return new ResponseBean(200,"change success",categoryService.selectCategoryByIsindex(true));
+    }
+
+    // 获取网站所有信息
+    @GetMapping("/site")
+    public ResponseBean getSiteInfo(){
+        return new ResponseBean(200,null,siteService.selectAll());
+    }
+
+    // 修改网站信息
+    @PostMapping("/site")
+    @Transactional
+    public ResponseBean changesiteinfo(HttpServletRequest request){
+        String JSONString = JSONUtil.getJSONString(request);
+        JSONObject siteInfoJSON  = JSONObject.parseObject(JSONString);
+        int siteId = siteInfoJSON.getInteger("id");
+        String siteValue = siteInfoJSON.getString("value");
+        siteService.changeValueById(siteValue,siteId);
+        // 返回修改后的信息
+        return new ResponseBean(200,"change success",siteService.selectAll());
     }
 
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class SiteServiceImpl implements SiteService {
@@ -40,6 +39,9 @@ public class SiteServiceImpl implements SiteService {
 
     public void insertSite(Site site){
         siteRepository.save(site);
+    }
+    public Site selectByAttribute(String attribute){
+        return siteRepository.findByAttribute(attribute);
     }
 
 }

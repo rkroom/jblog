@@ -10,4 +10,5 @@ public interface SiteService {
     public Map selectOpenInfo();
     public void changeValueById(String value,int id);
     public void insertSite(Site site);
+    public Site selectByAttribute(String attribute);
 }

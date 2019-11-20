@@ -144,5 +144,35 @@ public class ApiControl {
         return new ResponseBean(200,null,siteService.selectOpenInfo());
     }
 
+    @GetMapping("/previousarticle")
+    public ResponseBean previousarticle(HttpServletRequest request){
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String category = request.getParameter("category");
+            // 如果前端未传递category参数，则将category参数设置为%
+            //%为sql中的通配符
+            if (category == null){
+                category = "%";
+            }
+            return new ResponseBean(200,null,pagingService.selectPreviousArticleSlug(id,category));
+        } catch (Exception e){
+            return null;
+        }
+    }
+
+    @GetMapping("/nextarticle")
+    public ResponseBean nextarticle(HttpServletRequest request){
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String category = request.getParameter("category");
+            if (category == null){
+                category = "%";
+            }
+            return new ResponseBean(200,null,pagingService.selectNextArticleSlug(id,category));
+        } catch (Exception e){
+            return null;
+        }
+    }
+
 
 }

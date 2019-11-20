@@ -30,4 +30,10 @@ public interface PagingRepository extends JpaRepository<Article,Integer> {
     // 查询相应分类已发表文章数量
     @Query("select count(a.id) from Article a where a.categories.category = ?1 and a.published = true ")
     int countByPublishedAndCategory(String category);
+    //查找上一篇文章，如果有分类参数，则查询该分类的上一篇文章
+    @Query(value = "select a.slug,a.title from Article a where a.id < ?1 and a.published = true and a.categories.category like ?2 ")
+    List<List> findPreviousArticleSlug(int id,String category,Pageable pageable);
+    //查找下一篇文章，如果有分类参数，则查询该分类的下一篇文章
+    @Query(value = "select a.slug,a.title from Article a where a.id > ?1 and a.published = true and a.categories.category like ?2 ")
+    List<List> findNextArticleSlug(int id,String category,Pageable pageable);
 }

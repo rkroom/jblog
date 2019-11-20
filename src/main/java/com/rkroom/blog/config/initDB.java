@@ -22,7 +22,7 @@ public class initDB implements ApplicationRunner {
     //从数据库获取网站信息，如果返回的信息为空，则认为网站需要初始化
     @Override
     public void run(ApplicationArguments var1) throws Exception {
-        if(siteService.selectOpenInfo().size() == 0){
+        if(siteService.selectByAttribute("title") == null){
             //插入title和subtitle两条信息
             Site site1 = new Site();
             site1.setAttribute("title");

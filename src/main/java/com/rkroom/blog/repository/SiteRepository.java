@@ -17,4 +17,5 @@ public interface SiteRepository extends JpaRepository<Site,Integer> {
     @Modifying(clearAutomatically=true)
     @Query(value = "update Site s set s.value =?1 where s.id = ?2")
     void updateValueById(String value,int id);
+    Site findByAttribute(String attribute);
 }

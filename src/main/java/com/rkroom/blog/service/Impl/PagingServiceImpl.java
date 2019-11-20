@@ -85,4 +85,26 @@ public class PagingServiceImpl implements PagingService {
         return pagingRepository.countByPublishedAndCategory(category); //返回对应目录已发表文章数量
     }
 
+    public Map selectPreviousArticleSlug(int id,String category){
+        Pageable pageable = PageRequest.of(0,1, Sort.Direction.DESC,"id");
+        List<List> previousArticle = pagingRepository.findPreviousArticleSlug(id,category,pageable);
+        // 将返回的数据组成map形式
+        List list = previousArticle.get(0);
+        Map map = new HashMap();
+        map.put("slug",list.get(0));
+        map.put("title",list.get(1));
+        return map;
+    }
+
+    public Map selectNextArticleSlug(int id,String category){
+        Pageable pageable = PageRequest.of(0,1, Sort.Direction.ASC,"id");
+        List<List> nextArticle = pagingRepository.findNextArticleSlug(id,category,pageable);
+        // 将返回的数据组成map形式
+        List list = nextArticle.get(0);
+        Map map = new HashMap();
+        map.put("slug",list.get(0));
+        map.put("title",list.get(1));
+        return map;
+    }
+
 }

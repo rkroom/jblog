@@ -36,4 +36,14 @@ public class UserServiceImpl implements UserService { //实现userservice接口
         userRepository.updatePasswordById(password,id);
         return 1;
     }
+
+    //新增用户
+    public void insertUser(User user){
+        // 将密码hash后再存入数据库
+        String username = user.getUsername();
+        String password = user.getPassword();
+        password = new SimpleHash("md5",password, ByteSource.Util.bytes(username),2).toString();
+        user.setPassword(password);
+        userRepository.save(user);
+    }
 }

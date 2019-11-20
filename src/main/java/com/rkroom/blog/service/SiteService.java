@@ -9,4 +9,5 @@ public interface SiteService {
     public List<Site> selectAll();
     public Map selectOpenInfo();
     public void changeValueById(String value,int id);
+    public void insertSite(Site site);
 }

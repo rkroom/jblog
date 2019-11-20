@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class SiteServiceImpl implements SiteService {
@@ -35,6 +36,10 @@ public class SiteServiceImpl implements SiteService {
     // 更改网站属性的值
     public void changeValueById(String value,int id){
         siteRepository.updateValueById(value, id);
+    }
+
+    public void insertSite(Site site){
+        siteRepository.save(site);
     }
 
 }

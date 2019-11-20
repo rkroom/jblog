@@ -7,6 +7,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,15 +35,22 @@ public class Article {
     private Date modifydate; //修改时间
     @Column(columnDefinition="bool default false")  //字段为布尔类型
     private boolean published; //发布状态，以此实现草稿功能
-    @ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL) //多对多关系，懒加载
-    @JoinTable(name="a_t", joinColumns={@JoinColumn(name="article_id")},inverseJoinColumns={@JoinColumn(name="tag_id")}) //通过连接表实现多对多关系
-    @Column(columnDefinition="text")
+    /*
+    对于manytoone，级联类型选择all，可能会导致错误，级联类型应该根据实际来选择。
+     */
+    @ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.MERGE) //多对多关系，急加载，对于立即要用到的数据，使用急加载，级联方式为MERGE
     private Set<Tags> tags = new HashSet<>(); //tag
-    @Column(columnDefinition="text",unique = true,nullable = false) //不重复，不能为空
+    @NotBlank //校验注解，在保存的时候会检验是否为空
+    //设置slug为varchar(191)，否则不能建立唯一索引
+    //如果想要使用更长的长度，如varchar(255)，mysql5.6需要开启innodb_large_prefix
+    //或者mysql5.7以上版本，
+    @Column(columnDefinition="varchar(191) not null",unique = true,nullable = false) //不重复，不能为空
     private String slug; //别名
-    @ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL) //多对一关系
+    @NotNull
+    @ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.MERGE) //多对一关系
     @JoinColumn(name="UserId") //userid
     private User users; //用户
-    @ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL) //多对一关系
+    @NotNull
+    @ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.MERGE) //多对一关系
     private Categories categories; //分类
 }

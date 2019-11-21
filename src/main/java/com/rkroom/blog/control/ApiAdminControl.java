@@ -244,8 +244,12 @@ public class ApiAdminControl {
 
     // 获取网站所有信息
     @GetMapping("/site")
-    public ResponseBean getSiteInfo(){
-        return new ResponseBean(200,null,siteService.selectAll());
+    public ResponseBean getSiteInfo(HttpServletRequest request){
+        String attribute = request.getParameter("attribute");
+        if (attribute == null) {
+            return new ResponseBean(200, null, siteService.selectAll());
+        }
+        return new ResponseBean(200, null, siteService.selectByAttribute(attribute));
     }
 
     // 修改网站信息

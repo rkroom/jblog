@@ -12,6 +12,7 @@ public class Site {
     private Integer id;
     @Column(columnDefinition="varchar(191) not null",unique = true,nullable = false)
     private String attribute;
+    @Column(columnDefinition="text")
     private String value;
     private boolean authorization;
 }

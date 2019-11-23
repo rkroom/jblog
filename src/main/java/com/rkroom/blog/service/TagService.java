@@ -5,7 +5,7 @@ import com.rkroom.blog.entity.Tags;
 import java.util.List;
 
 public interface TagService {
-    public List<Tags> selectAll();
-    public void insert(Tags tag);
-    public Tags selectById(int id);
+    List<Tags> selectAll();
+    void insert(Tags tag);
+    Tags selectById(int id);
 }

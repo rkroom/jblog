@@ -245,6 +245,7 @@ public class ApiAdminControl {
     @GetMapping("/site")
     public ResponseBean getSiteInfo(HttpServletRequest request){
         String attribute = request.getParameter("attribute");
+        // 根据是否传递参数 来获取所有数据或者单个数据
         if (attribute == null) {
             return new ResponseBean(200, null, siteService.selectAll());
         }

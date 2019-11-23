@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface PagingService {
-    public List selectAllByPage(int page);
-    public int selectCountByStatus(boolean status);
-    public List selectAllArticle(int page);
-    public List selectArticleByCategoryAndPage(String category,int page);
-    public int selectPublishedCountByCategory(String category);
-    public Map selectPreviousArticleSlug(int id, String category);
-    public Map selectNextArticleSlug(int id,String category);
+    List selectAllByPage(int page);
+    int selectCountByStatus(boolean status);
+    List selectAllArticle(int page);
+    List selectArticleByCategoryAndPage(String category,int page);
+    int selectPublishedCountByCategory(String category);
+    Map selectPreviousArticleSlug(int id, String category);
+    Map selectNextArticleSlug(int id,String category);
 }

@@ -19,10 +19,6 @@ public class UserServiceImpl implements UserService { //实现userservice接口
         return userRepository.findByUsername(username); //根据用户名返回数据
     }
 
-    public int updatePasswordByUsername(String password,String username){
-        userRepository.updatePasswordByUsername(password,username);
-        return 1;
-    }
     public User selectById(int id){
         Optional<User> optional = userRepository.findById(id);
         User user = optional.get();

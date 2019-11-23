@@ -19,29 +19,24 @@ public class PagingServiceImpl implements PagingService {
     @Autowired //自动装配PagingRepository
     PagingRepository pagingRepository;
 
-    public List selectAllByPage(boolean status, int page) {
-        List<Map<String, Object>> paginglist = new ArrayList<Map<String, Object>>(); //新建一个ArrayList对象
-        paginglist = pagingRepository.findAllByPage(status, page); //根据页码获取对应的文章
-        Map<String, Object> map = new HashMap(); //新建一个HashMap对象
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>(); //新建一个对象
+    public List selectAllByPage(int page) {
+        Pageable pageable = PageRequest.of(page-1, 10, Sort.Direction.DESC,"id");
+        List<List> paginglist = pagingRepository.findAllByPage(pageable); //根据页码获取对应的文章
+        List<Map<String, Object>> list = new ArrayList<>(); //新建一个对象
         /*下面这段代码是为了去除掉首页数据中的HTML标签，使得首页看起来更加美观
-        思路是遍历List格式的分页数据，得到一个map形式（键值对）的文章数据，然后遍历这个map，
-        当键(key)为content的时候
-        替换值(value)的内容，将其中的html标签使用正则匹配，匹配成功后将其移除，将修改后的数据添加到一个新的List当中
-        并且返回这个新的list
          */
-        for (Map<String, Object> m : paginglist) {
-            map = new HashMap();
-            for (String s : m.keySet()) {
-                if (s.equals("content")) {
-                    String c = m.get(s).toString();
-                    c = c.replaceAll("<(S*?)[^>]*>.*?|<.*? />", "");
-                    c = c.replaceAll("&.{2,6}?;", "");
-                    map.put(s, c);
-                } else {
-                    map.put(s, m.get(s));
-                }
-            }
+        for (List i : paginglist) {
+            // 去除掉html标签
+            i.set(3,i.get(3).toString().replaceAll("<(S*?)[^>]*>.*?|<.*? />", ""));
+            i.set(3,i.get(3).toString().replaceAll("&.{2,6}?;", ""));
+            Map map = new HashMap();
+            map.put("id",i.get(0));
+            map.put("title",i.get(1));
+            map.put("username",i.get(2));
+            map.put("content",i.get(3));
+            map.put("slug",i.get(4));
+            map.put("publishdate",i.get(5));
+            map.put("category",i.get(6));
             list.add(map);
         }
         return list;
@@ -50,11 +45,19 @@ public class PagingServiceImpl implements PagingService {
     public int selectCountByStatus(boolean status) {
         return pagingRepository.countAllByPublished(true); //返回已发表文章数量
     }
-    public List selectAllUnPublished(int page){
-        return pagingRepository.findAllArticleByPublished(page);
-    }
     public List selectAllArticle(int page){
-        return pagingRepository.findAllArticle(page);
+        Pageable pageable = PageRequest.of(page-1, 200, Sort.Direction.DESC,"id");
+        List<List> pagingList =  pagingRepository.findAllArticle(pageable);
+        List<Map<String, Object>> list = new ArrayList<>(); //新建一个List对象
+        for (List i : pagingList) {
+            Map map = new HashMap();
+            map.put("id",i.get(0));
+            map.put("title",i.get(1));
+            map.put("slug",i.get(2));
+            map.put("published",i.get(3));
+            list.add(map);
+        }
+        return list;
     }
     public List selectArticleByCategoryAndPage(String category,int page){
         //分页参数，页码，每页数量，排序方式，排序依据
@@ -63,7 +66,7 @@ public class PagingServiceImpl implements PagingService {
         由于Repository返回的数据为列表形式，需要我们自己将其修改为键值对的Map形式。
          */
         List<List> categoryArticle = pagingRepository.findArticleByCategoryAndPage(category,pageable);
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = new ArrayList<>();
         for (List i: categoryArticle){
             // 去除掉html标签
             i.set(2,i.get(2).toString().replaceAll("<(S*?)[^>]*>.*?|<.*? />", ""));

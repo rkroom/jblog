@@ -1,20 +1,25 @@
 package com.rkroom.blog.service.Impl;
 
 import com.rkroom.blog.entity.Article;
+import com.rkroom.blog.entity.Tags;
 import com.rkroom.blog.repository.ArticleRepository;
+import com.rkroom.blog.repository.CommentRepository;
 import com.rkroom.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service //注册为service
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired //自动装配ArticleRepository，使我们可以访问article模型
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     public void insert(Article article){
         articleRepository.save(article); //调用save方法储存数据
@@ -42,34 +47,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
 
-    public List<Article> selectAll(){
-        return  articleRepository.findAll();
-    }
 
-
-    public int publishArticleBySlug(String slug){
-        articleRepository.updatePublishedBySlug(new Date(),slug);
-        return 1;
-    }
-
-
-    public int deleteArticleById(int id){
-        articleRepository.deleteArticleById(id);
-        return 1;
-    }
-
-
-    public int selectIdByslug(String slug){
-        return articleRepository.findIdBySlug(slug);
-    }
-
-    public int deleteCascadeCommentDataByArticleId(int id){
-        articleRepository.deleteCascadeCommentData(id);
-        return 1;
-    }
-
-    public int deleteCascadeTagDataByArticleId(int id){
-        articleRepository.deleteCascadeTagData(id);
+    public int deleteArticle(Article article){
+        int articleId= article.getId();
+        commentRepository.deleteCommentsByArticlesId(articleId);
+        Set<Tags> tags = article.getTags();
+        article.getTags().remove(tags);
+        articleRepository.delete(article);
         return 1;
     }
 

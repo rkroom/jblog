@@ -50,7 +50,7 @@ public class ApiControl {
     public ResponseBean index(HttpServletRequest request) {
         try { //如果page传递过来的参数不是数字或者为空，在转换的时候会出现错误，这里用try，catch来处理错误。
             int page = Integer.parseInt(request.getParameter("page")); //将获取的参数转换为INT类型
-            return new ResponseBean(200,null,pagingService.selectAllByPage(true, (page-1)*10)); //返回列表数据
+            return new ResponseBean(200,null,pagingService.selectAllByPage(page)); //返回列表数据
         }catch(Exception e) {
             return null; //如果报错则不返回数据
         }

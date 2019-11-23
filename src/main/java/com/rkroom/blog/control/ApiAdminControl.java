@@ -118,10 +118,9 @@ public class ApiAdminControl {
         String JSONString = JSONUtil.getJSONString(request);
         JSONObject deleteJSON  = JSONObject.parseObject(JSONString);
         int articleid = deleteJSON.getInteger("id");
+        Article article = articleService.selectById(articleid);
         //由于在模型中设置了关联的外键（评论，标签），如果外键数据还存在则无法删除文章，这里先删除外键数据，再删除文章
-        articleService.deleteCascadeCommentDataByArticleId(articleid);
-        articleService.deleteCascadeTagDataByArticleId(articleid);
-        articleService.deleteArticleById(articleid);
+        articleService.deleteArticle(article);
         return new ResponseBean(200,"delete success",null);
     }
 
@@ -157,7 +156,7 @@ public class ApiAdminControl {
     //获取所有文章（包括未发表的）
     @GetMapping("/allarticle")
     public ResponseBean allarticle(){
-        return new ResponseBean(200,null,pagingService.selectAllArticle(0));
+        return new ResponseBean(200,null,pagingService.selectAllArticle(1));
     }
 
     // 获取所有分类目录的列表

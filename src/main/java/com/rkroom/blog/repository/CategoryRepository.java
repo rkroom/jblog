@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Categories,Integer> {
     List<Categories> findAll();
-    List findCategoryByIsindex(boolean status);
+    List<Categories> findCategoryByIsindex(boolean status);
     @Modifying
     @Query(value = "update Categories c set c.isindex =?1 where c.id = ?2")
     void updateIsindexById(boolean status,int id);

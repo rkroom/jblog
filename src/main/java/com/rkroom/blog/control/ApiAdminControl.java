@@ -154,9 +154,19 @@ public class ApiAdminControl {
     }
 
     //获取所有文章（包括未发表的）
-    @GetMapping("/allarticle")
-    public ResponseBean allarticle(){
-        return new ResponseBean(200,null,pagingService.selectAllArticle(1));
+    @GetMapping("/articles")
+    public ResponseBean allarticle(HttpServletRequest request){
+        try { //如果page传递过来的参数不是数字或者为空，在转换的时候会出现错误，这里用try，catch来处理错误。
+            int page = Integer.parseInt(request.getParameter("page")); //将获取的参数转换为INT类型
+            return new ResponseBean(200,null,pagingService.selectAllArticle(page)); //返回列表数据
+        }catch (Exception e) {
+            return null;
+        }
+    }
+
+    @GetMapping("/articlesnum")
+    public ResponseBean articlesnum(){
+        return new ResponseBean(200,null,pagingService.selectCountAll());
     }
 
     // 获取所有分类目录的列表
@@ -172,9 +182,19 @@ public class ApiAdminControl {
     }
 
     // 获取所有评论
-    @GetMapping("/allcomment")
-    public ResponseBean allcomment(){
-        return new ResponseBean(200,null,commentService.selectAllCommentAndItsArticle());
+    @GetMapping("/comments")
+    public ResponseBean allcomment(HttpServletRequest request){
+        try { //如果page传递过来的参数不是数字或者为空，在转换的时候会出现错误，这里用try，catch来处理错误。
+            int page = Integer.parseInt(request.getParameter("page")); //将获取的参数转换为INT类型
+            return new ResponseBean(200,null,commentService.selectAllCommentAndItsArticle(page)); //返回列表数据
+        }catch (Exception e) {
+            return null;
+        }
+    }
+
+    @GetMapping("/commentsnum")
+    public ResponseBean commentsNum(){
+        return new ResponseBean(200,null,commentService.selectCountAll());
     }
 
     // 显示评论

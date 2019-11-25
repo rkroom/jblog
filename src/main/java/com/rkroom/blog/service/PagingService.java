@@ -11,4 +11,5 @@ public interface PagingService {
     int selectPublishedCountByCategory(String category);
     Map selectPreviousArticleSlug(int id, String category);
     Map selectNextArticleSlug(int id,String category);
+    int selectCountAll();
 }

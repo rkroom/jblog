@@ -7,7 +7,8 @@ import java.util.List;
 public interface CommentService {
     List selectAllByArticleAndPublishstatus(int id, boolean status);
     void insert(Comment comment);
-    List selectAllCommentAndItsArticle();
+    List selectAllCommentAndItsArticle(int page);
     int publishCommentById(int id);
     int deleteCommentById(int id);
+    int selectCountAll();
 }

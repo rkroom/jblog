@@ -46,7 +46,8 @@ public class PagingServiceImpl implements PagingService {
         return pagingRepository.countAllByPublished(true); //返回已发表文章数量
     }
     public List selectAllArticle(int page){
-        Pageable pageable = PageRequest.of(page-1, 200, Sort.Direction.DESC,"id");
+        //多条件排序
+        Pageable pageable = PageRequest.of(page-1, 13,Sort.by("published").ascending().and(Sort.by("id").descending()));
         List<List> pagingList =  pagingRepository.findAllArticle(pageable);
         List<Map<String, Object>> list = new ArrayList<>(); //新建一个List对象
         for (List i : pagingList) {
@@ -108,6 +109,10 @@ public class PagingServiceImpl implements PagingService {
         map.put("slug",list.get(0));
         map.put("title",list.get(1));
         return map;
+    }
+
+    public int selectCountAll(){
+        return pagingRepository.countAll();
     }
 
 }

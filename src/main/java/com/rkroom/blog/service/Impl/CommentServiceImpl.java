@@ -4,6 +4,9 @@ import com.rkroom.blog.entity.Comment;
 import com.rkroom.blog.repository.CommentRepository;
 import com.rkroom.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +24,9 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(comment);
     }
     //查询评论及其对应的ID
-    public List selectAllCommentAndItsArticle(){
-        return commentRepository.findAllCommentAndItsArticle();
+    public List selectAllCommentAndItsArticle(int page){
+        Pageable pageable = PageRequest.of(page-1, 13, Sort.Direction.DESC,"id");
+        return commentRepository.findAllCommentAndItsArticle(pageable);
     }
     //发布评论
     public int publishCommentById(int id){
@@ -33,5 +37,9 @@ public class CommentServiceImpl implements CommentService {
     public int deleteCommentById(int id){
         commentRepository.deleteCommentById(id);
         return 1;
+    }
+    //获取评论总数
+    public int selectCountAll(){
+        return commentRepository.countAll();
     }
 }

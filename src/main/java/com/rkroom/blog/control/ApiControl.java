@@ -79,7 +79,7 @@ public class ApiControl {
         }
     }
 
-    @GetMapping("/articleNum")
+    @GetMapping("/articlenum")
     public ResponseBean getArticleNum() {
         //返回所有已经发表文章的数量
         return new ResponseBean(200,null,pagingService.selectCountByStatus(true));

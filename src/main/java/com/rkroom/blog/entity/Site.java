@@ -1,11 +1,8 @@
 package com.rkroom.blog.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 
 @Entity
-@Data
 public class Site {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,4 +12,36 @@ public class Site {
     @Column(columnDefinition="text")
     private String value;
     private boolean authorization;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public boolean isAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(boolean authorization) {
+        this.authorization = authorization;
+    }
 }

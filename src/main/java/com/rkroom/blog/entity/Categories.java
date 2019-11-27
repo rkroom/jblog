@@ -1,13 +1,11 @@
 package com.rkroom.blog.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Data
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
 public class Categories {
     @Id
@@ -19,4 +17,28 @@ public class Categories {
     private String category;
     @Column(columnDefinition="bool default false")  //字段为布尔类型
     private boolean isindex; //是否在首页显示
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public boolean isIsindex() {
+        return isindex;
+    }
+
+    public void setIsindex(boolean isindex) {
+        this.isindex = isindex;
+    }
 }

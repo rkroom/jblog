@@ -25,11 +25,11 @@ class UserServiceImpl : UserService {
     }
 
     override fun updatePasswordById(password: String?, id: Int): Int {
-        var password = password
+        var pd = password
         val username = userRepository!!.findUsernameById(id)
         //将密码hash后存入数据库
-        password = SimpleHash("md5", password, ByteSource.Util.bytes(username), 2).toString()
-        userRepository!!.updatePasswordById(password, id)
+        pd = SimpleHash("md5", pd, ByteSource.Util.bytes(username), 2).toString()
+        userRepository!!.updatePasswordById(pd, id)
         return 1
     }
 

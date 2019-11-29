@@ -20,7 +20,7 @@ class CommentServiceImpl : CommentService {
     }
 
     //新增评论
-    override fun insert(comment: Comment?) {
+    override fun insert(comment: Comment) {
         commentRepository!!.save<Comment>(comment)
     }
 

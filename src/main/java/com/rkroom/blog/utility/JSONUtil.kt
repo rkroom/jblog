@@ -10,7 +10,7 @@ object JSONUtil {
         try { // 获取输入流
             val streamReader = BufferedReader(InputStreamReader(request?.inputStream, "UTF-8"))
             // 从输入流获取字符串
-            var line: String? = null
+            var line: String?
             while (streamReader.readLine().also { line = it } != null) {
                 sb.append(line)
             }

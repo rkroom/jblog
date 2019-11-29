@@ -33,7 +33,7 @@ class SiteServiceImpl : SiteService {
         siteRepository!!.updateValueById(value, id)
     }
 
-    override fun insertSite(site: Site?) {
+    override fun insertSite(site: Site) {
         siteRepository!!.save<Site>(site)
     }
 

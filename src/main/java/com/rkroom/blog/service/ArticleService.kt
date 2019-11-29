@@ -5,7 +5,7 @@ import java.util.*
 
 interface ArticleService {
     //接口ArticleService
-    fun insert(article: Article?) //定义一个Insert接口，其参数为Article类型的article。
+    fun insert(article: Article) //定义一个Insert接口，其参数为Article类型的article。
 
     fun selectBySlug(slug: String?): Article? //定义一个selectBySlug接口，其参数为String类型的slug.
     fun update(article: Article?): Int //更新

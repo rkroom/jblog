@@ -15,7 +15,7 @@ class CategoryServiceImpl : CategoryService {
         return categoryRepository!!.findAll()
     }
 
-    override fun insert(category: Categories?) {
+    override fun insert(category: Categories) {
         categoryRepository!!.save<Categories>(category)
     }
 

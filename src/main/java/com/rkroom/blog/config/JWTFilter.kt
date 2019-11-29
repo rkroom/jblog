@@ -49,7 +49,7 @@ class JWTFilter : BasicHttpAuthenticationFilter() {
             try {
                 executeLogin(request, response)
             } catch (e: Exception) {
-                response401(request, response)
+                response401(response)
             }
         }
         return true
@@ -76,7 +76,7 @@ class JWTFilter : BasicHttpAuthenticationFilter() {
     /**
      * 将非法请求跳转到 /401
      */
-    private fun response401(req: ServletRequest?, resp: ServletResponse?) {
+    private fun response401(resp: ServletResponse?) {
         try {
             val httpServletResponse = resp as HttpServletResponse
             httpServletResponse.sendRedirect("/401")

@@ -15,7 +15,7 @@ class ArticleServiceImpl : ArticleService {
     @Autowired
     private val commentRepository: CommentRepository? = null
 
-    override fun insert(article: Article?) {
+    override fun insert(article: Article) {
         articleRepository!!.save<Article>(article) //调用save方法储存数据
     }
 

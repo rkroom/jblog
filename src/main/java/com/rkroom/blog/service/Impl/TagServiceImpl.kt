@@ -15,7 +15,7 @@ class TagServiceImpl : TagService {
         return tagRepository!!.findAll()
     }
 
-    override fun insert(tag: Tags?) {
+    override fun insert(tag: Tags) {
         tagRepository!!.save<Tags>(tag)
     }
 

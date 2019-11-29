@@ -60,9 +60,9 @@ class PagingServiceImpl : PagingService {
         /*
         由于Repository返回的数据为列表形式，需要我们自己将其修改为键值对的Map形式。
          */
-        val categoryArticle: List<MutableList<*>?>? = pagingRepository!!.findArticleByCategoryAndPage(category, pageable) as List<MutableList<*>?>?
+        val categoryArticle: List<MutableList<*>?> = pagingRepository!!.findArticleByCategoryAndPage(category, pageable) as List<MutableList<*>?>
         val list: MutableList<Map<String, Any?>> = ArrayList()
-        for (i in categoryArticle!!) { // 去除掉html标签
+        for (i in categoryArticle) { // 去除掉html标签
             var s = i?.get(2).toString().replace("<(S*?)[^>]*>.*?|<.*? />".toRegex(), "")
             s = s.replace("&.{2,6}?;".toRegex(), "")
             val map: MutableMap<String, Any?> = HashMap()

@@ -36,7 +36,7 @@ class ExceptionController {
     //获取状态码
     private fun getStatus(request: HttpServletRequest): HttpStatus {
         val statusCode = request.getAttribute("javax.servlet.error.status_code") as Int
-                ?: return HttpStatus.INTERNAL_SERVER_ERROR
+                //?: return HttpStatus.INTERNAL_SERVER_ERROR
         return HttpStatus.valueOf(statusCode)
     }
 }

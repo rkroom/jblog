@@ -44,7 +44,7 @@ object JWTUtil {
             val verifier = JWT.require(algorithm)
                     .withClaim("username", username)
                     .build()
-            val jwt = verifier.verify(token)
+            verifier.verify(token)
             true
         } catch (exception: Exception) {
             false

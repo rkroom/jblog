@@ -16,7 +16,10 @@ class ArticleServiceImpl : ArticleService {
     private val commentRepository: CommentRepository? = null
 
     override fun insert(article: Article) {
-        articleRepository!!.save<Article>(article) //调用save方法储存数据
+        if (article!!.isPublished && article.publishdate == null) {
+            article.publishdate = Date()
+        }
+        articleRepository!!.save(article) //调用save方法储存数据
     }
 
     override fun selectBySlug(slug: String?): Article? {

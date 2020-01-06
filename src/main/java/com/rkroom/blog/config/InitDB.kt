@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 
 // 初始化数据库，每次重新运行springboot2程序时会执行一次
 @Component
-class initDB : ApplicationRunner {
+class InitDB : ApplicationRunner {
     @Autowired
     private val siteService: SiteService? = null
     @Autowired

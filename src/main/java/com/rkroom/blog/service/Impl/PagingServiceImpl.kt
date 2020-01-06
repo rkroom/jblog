@@ -27,7 +27,11 @@ class PagingServiceImpl : PagingService {
             map["id"] = i?.get(0)
             map["title"] = i?.get(1)
             map["username"] = i?.get(2)
-            map["content"] = s
+            if(s.length <= 200){
+                map["content"] = s
+            }else{
+                map["content"] = s.subSequence(1,199)
+            }
             map["slug"] = i?.get(4)
             map["publishdate"] = i?.get(5)
             map["category"] = i?.get(6)
@@ -68,7 +72,11 @@ class PagingServiceImpl : PagingService {
             val map: MutableMap<String, Any?> = HashMap()
             map["id"] = i?.get(0)
             map["title"] = i?.get(1)
-            map["content"] = s
+            if(s.length <= 200){
+                map["content"] = s
+            }else{
+                map["content"] = s.subSequence(1,199)
+            }
             map["slug"] = i?.get(3)
             map["publishdate"] = i?.get(4)
             map["username"] = i?.get(5)

@@ -41,11 +41,11 @@ class PagingServiceImpl : PagingService {
     }
 
     override fun selectCountByStatus(status: Boolean): Int {
-        return pagingRepository!!.countAllByPublished(true) //返回已发表文章数量
+        return pagingRepository!!.countAllByIsPublished(true) //返回已发表文章数量
     }
 
     override fun selectAllArticle(page: Int): List<*> { //多条件排序
-        val pageable: Pageable = PageRequest.of(page - 1, 13, Sort.by("published").ascending().and(Sort.by("id").descending()))
+        val pageable: Pageable = PageRequest.of(page - 1, 13, Sort.by("isPublished").ascending().and(Sort.by("id").descending()))
         val pagingList = pagingRepository!!.findAllArticle(pageable)
         val list: MutableList<Map<String, Any?>> = ArrayList() //新建一个List对象
         for (i in pagingList!!) {

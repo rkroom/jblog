@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface SiteRepository : JpaRepository<Site?, Int?> {
     // 获取公开信息
-    @Query(value = "select s from Site s where s.authorization = false ")
+    @Query(value = "select s from Site s where s.isAuthorization = false ")
     fun findOpenInfo(): List<Site?>?
 
     // clearAutomatically，更新时刷新缓存

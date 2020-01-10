@@ -1,6 +1,7 @@
 package com.rkroom.blog.config
 
 import org.apache.shiro.cache.ehcache.EhCacheManager
+import org.apache.shiro.session.mgt.DefaultSessionManager
 import org.apache.shiro.spring.LifecycleBeanPostProcessor
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager
@@ -10,10 +11,13 @@ import org.springframework.context.annotation.Configuration
 import java.util.*
 import javax.servlet.Filter
 
+
 @Configuration //定义配置类
 class ShiroConfig {
+
+    // todo 禁用session
     //设置配置为ehcache-shiro.xml
-//设置缓存bean
+    //设置缓存bean
     @get:Bean
     val ehCacheManager: EhCacheManager
         get() {

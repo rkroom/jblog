@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
 @Repository //不要忘记
 interface CommentRepository : JpaRepository<Comment?, Int?> {
     //根据文章ID和发布状态查询所有的评论
-    @Query(value = "select c from Comment c where c.articles.id = ?1 and c.published = ?2")
+    @Query(value = "select c from Comment c where c.articles.id = ?1 and c.isPublished = ?2")
     fun findByArticleAndPublishstatus(id: Int, status: Boolean): List<CommentDto?>?
 
     //查询所有文章和其对应的文章ID，left join，左连接，具体内容可以查看runoob.com的mysql教程
@@ -19,10 +19,9 @@ interface CommentRepository : JpaRepository<Comment?, Int?> {
     fun findAllCommentAndItsArticle(pageable: Pageable?): List<Comment?>?
 
     //根据评论ID发布评论
-    @Query(value = "update Comment c set c.published = true where c.id=?1")
-    @Modifying
-    fun  //Update，insert等会改变字段内容的操作需要加上@Modifying注解才能生效
-            updatePublishedById(id: Int): Int
+    @Query(value = "update Comment c set c.isPublished = true where c.id=?1")
+    @Modifying     //Update，insert等会改变字段内容的操作需要加上@Modifying注解才能生效
+    fun updatePublishedById(id: Int): Int
 
     //根据评论ID删除评论
     @Query(value = "delete from Comment c where c.id = ?1")

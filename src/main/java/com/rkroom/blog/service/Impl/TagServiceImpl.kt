@@ -16,7 +16,7 @@ class TagServiceImpl : TagService {
     }
 
     override fun insert(tag: Tags) {
-        tagRepository!!.save<Tags>(tag)
+        tagRepository!!.save(tag)
     }
 
     override fun selectById(id: Int): Tags? {

@@ -42,9 +42,10 @@ class ArticleServiceImpl : ArticleService {
 
     override fun deleteArticle(article: Article?): Int {
         val articleId = article!!.id
-        commentRepository!!.deleteCommentsByArticlesId(articleId)
+        commentRepository!!.deleteCommentsByArticlesId(articleId!!)
         val tags = article.tags
-        article.tags.remove<Any>(tags)
+        //article.tags.remove<Any>(tags)
+        article.tags = article.tags.intersect(tags)
         articleRepository!!.delete(article)
         return 1
     }

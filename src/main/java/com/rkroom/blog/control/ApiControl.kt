@@ -91,7 +91,7 @@ class ApiControl {
         password = SimpleHash("md5", password, ByteSource.Util.bytes(username), 2).toString()
         // 如果数据库中的密码和用户传递过来的密码相同，则认证通过，向用户返回token
         return if (user!!.password == password) { // 如果验证失败，则返回错误信息
-            ResponseBean(200, "Login success", JWTUtil.sign(username, user.id, password))
+            ResponseBean(200, "Login success", JWTUtil.sign(username, user.id!!, password))
         } else {
             throw UnauthorizedException()
         }

@@ -47,13 +47,13 @@ class ApiAdminControl {
         或者在设计entity的时候不采用级联，在service/dao层面确保数据的完整性
         */
         val tags = article.tags
-        val tagstemp: MutableSet<Tags?> = HashSet()
+        val tagstemp: MutableSet<Tags> = HashSet()
         for (tag in tags) {
-            var t = tagService!!.selectById(tag.id)
-            tagstemp.add(t)
+            var t = tagService!!.selectById(tag.id!!)
+            tagstemp.add(t!!)
         }
-        val user = userService!!.selectById(article.users.id)
-        val category = categoryService!!.selectById(article.categories.id)
+        val user = userService!!.selectById(article.users?.id!!)
+        val category = categoryService!!.selectById(article.categories?.id!!)
         article.users = user
         article.categories = category
         article.tags = tagstemp
@@ -78,19 +78,19 @@ class ApiAdminControl {
         同时避免因为级联策略的问题，导致无法正确更新数据
         */
         val tags = article.tags
-        val tagstemp: MutableSet<Tags?> = HashSet()
+        val tagstemp: MutableSet<Tags> = HashSet()
         for (tag in tags) {
-            var t = tagService!!.selectById(tag.id)
-            tagstemp.add(t)
+            var t = tagService!!.selectById(tag.id!!)
+            tagstemp.add(t!!)
         }
-        val user = userService!!.selectById(article.users.id)
-        val category = categoryService!!.selectById(article.categories.id)
+        val user = userService!!.selectById(article.users?.id!!)
+        val category = categoryService!!.selectById(article.categories?.id!!)
         article.users = user
         article.categories = category
         article.tags = tagstemp
         //如果传过来的ID不为空，则更新文章，如果不为空则提示ID重复。
-        return if (article.id > 0) { //
-            val date = articleService!!.selectCreatedateById(article.id)
+        return if (article.id!! > 0) { //
+            val date = articleService!!.selectCreatedateById(article.id!!)
             article.createdate = date
             articleService.update(article)
             val data: MutableMap<String, Any?> = HashMap()
@@ -130,7 +130,7 @@ class ApiAdminControl {
          */
         val articleid = publishJSON.getInteger("id")
         val article = articleService!!.selectById(articleid)
-        article?.setPublished(true)
+        article?.isPublished = true
         articleService.update(article)
         return ResponseBean(200, "publish success", null)
     }

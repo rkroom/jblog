@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CategoryRepository : JpaRepository<Categories?, Int?> {
     override fun findAll(): List<Categories?>
-    fun findCategoryByIsindex(status: Boolean): List<Categories?>?
+    fun findCategoryByisIndex(status: Boolean): List<Categories?>?
     @Modifying
-    @Query(value = "update Categories c set c.isindex =?1 where c.id = ?2")
+    @Query(value = "update Categories c set c.isIndex =?1 where c.id = ?2")
     fun updateIsindexById(status: Boolean, id: Int)
 }

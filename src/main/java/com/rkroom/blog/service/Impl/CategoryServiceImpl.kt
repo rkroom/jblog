@@ -16,7 +16,7 @@ class CategoryServiceImpl : CategoryService {
     }
 
     override fun insert(category: Categories) {
-        categoryRepository!!.save<Categories>(category)
+        categoryRepository!!.save(category)
     }
 
     override fun selectById(id: Int): Categories? {
@@ -26,7 +26,7 @@ class CategoryServiceImpl : CategoryService {
 
     //根据是否在首页显示获取分类目录
     override fun selectCategoryByIsindex(status: Boolean): List<*>? {
-        return categoryRepository!!.findCategoryByIsindex(status)
+        return categoryRepository!!.findCategoryByisIndex(status)
     }
 
     //修改分类目录首页显示状态

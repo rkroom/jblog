@@ -34,7 +34,7 @@ class SiteServiceImpl : SiteService {
     }
 
     override fun insertSite(site: Site) {
-        siteRepository!!.save<Site>(site)
+        siteRepository!!.save(site)
     }
 
     override fun selectByAttribute(attribute: String?): Site? {

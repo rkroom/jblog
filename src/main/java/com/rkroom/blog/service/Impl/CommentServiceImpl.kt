@@ -21,7 +21,7 @@ class CommentServiceImpl : CommentService {
 
     //新增评论
     override fun insert(comment: Comment) {
-        commentRepository!!.save<Comment>(comment)
+        commentRepository!!.save(comment)
     }
 
     //查询评论及其对应的ID

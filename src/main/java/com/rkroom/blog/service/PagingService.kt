@@ -9,4 +9,6 @@ interface PagingService {
     fun selectPreviousArticleSlug(id: Int, category: String?): Map<*, *>?
     fun selectNextArticleSlug(id: Int, category: String?): Map<*, *>?
     fun selectCountAll(): Int
+    fun selectQueryByTitle(title:String,page:Int):List<*>?
+    fun selectCountQueryByTitle(title: String): Int
 }

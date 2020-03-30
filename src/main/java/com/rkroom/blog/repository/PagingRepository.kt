@@ -39,4 +39,12 @@ interface PagingRepository : JpaRepository<Article?, Int?> {
 
     @Query(value = "select count(a.id) from Article a")
     fun countAll(): Int
+
+    // 利用关键词在标题中模糊匹配
+    @Query(value = "select a.id,a.title,u.username,SUBSTRING(a.content,1,500),a.slug,a.publishdate,c.category from Article a left join User u on (a.users.id=u.id) left join Categories c on (a.categories.id = c.id) where a.isPublished = true and a.title like %?1%")
+    fun findQueryByTitle(title:String?,pageable: Pageable?): List<MutableList<*>?>?
+
+    // 计算该关键词总文章数
+    @Query("select count(a.id) from Article a where a.title like %?1% and a.isPublished = true ")
+    fun countQueryByByTitle(Title: String?): Int
 }

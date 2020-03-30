@@ -73,8 +73,8 @@ class ApiControl {
     //返回所有已经发表文章的数量
     @get:GetMapping("/articlenum")
     val articleNum: ResponseBean
-        get() =//返回所有已经发表文章的数量
-            ResponseBean(200, null, pagingService!!.selectCountByStatus(true))
+        //返回所有已经发表文章的数量
+    get() = ResponseBean(200, null, pagingService!!.selectCountByStatus(true))
 
     @PostMapping("/login") //POST方法匹配/login
     fun login(request: HttpServletRequest?): ResponseBean { // 调用JSON处理工具，获取字符串
@@ -157,6 +157,29 @@ class ApiControl {
                 category = "%"
             }
             ResponseBean(200, null, pagingService!!.selectNextArticleSlug(id, category))
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    @GetMapping("/search")
+    fun searchindex(request: HttpServletRequest): ResponseBean? {
+        return try {
+            val page = request.getParameter("page").toInt()
+            val keyword = request.getParameter("keyword")
+            //获取相应分类下相应页码已经发表文章
+            ResponseBean(200, null, pagingService!!.selectQueryByTitle(keyword, page))
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    @GetMapping("/searchnum")
+    fun searchnum(request: HttpServletRequest): ResponseBean? {
+        return try {
+            val keyword = request.getParameter("keyword")
+            //获取对应分类已经发表文章数量
+            ResponseBean(200, null, pagingService!!.selectCountQueryByTitle(keyword))
         } catch (e: Exception) {
             null
         }

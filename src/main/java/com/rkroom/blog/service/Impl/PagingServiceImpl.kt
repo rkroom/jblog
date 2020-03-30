@@ -115,4 +115,33 @@ class PagingServiceImpl : PagingService {
     override fun selectCountAll(): Int {
         return pagingRepository!!.countAll()
     }
+
+    override fun selectQueryByTitle(title: String,page:Int): List<*>? {
+        val pageable: Pageable = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishdate")
+        val paginglist: List<List<*>?>? = pagingRepository!!.findQueryByTitle(title,pageable) //根据页码获取对应的文章
+        val list: MutableList<Map<String, Any?>> = ArrayList() //新建一个对象
+        /*下面这段代码是为了去除掉首页数据中的HTML标签，使得首页看起来更加美观
+         */for (i in paginglist!!) { // 去除掉html标签
+            var s = i?.get(3).toString().replace("<(S*?)[^>]*>.*?|<.*? />".toRegex(), "")
+            s = s.replace("&.{2,6}?;".toRegex(), "")
+            val map: MutableMap<String, Any?> = HashMap()
+            map["id"] = i?.get(0)
+            map["title"] = i?.get(1)
+            map["username"] = i?.get(2)
+            if(s.length <= 200){
+                map["content"] = s
+            }else{
+                map["content"] = s.subSequence(1,199)
+            }
+            map["slug"] = i?.get(4)
+            map["publishdate"] = i?.get(5)
+            map["category"] = i?.get(6)
+            list.add(map)
+        }
+        return list
+    }
+
+    override fun selectCountQueryByTitle(title: String): Int {
+        return pagingRepository!!.countQueryByByTitle(title)
+    }
 }
